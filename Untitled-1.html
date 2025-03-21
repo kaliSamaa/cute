@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Clicker Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #4c00829b;
+        }
+        #cat {
+            width: 200px;
+            cursor: pointer;
+        }
+        #counter {
+            font-size: 2em;
+            margin-top: 20px;
+        }
+        #celebration {
+            display: none;
+            margin-top: 30px;
+        }
+        #celebration img {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Click the Car 5 times to win!</h1>
+    <img id="cat" src="https://i.pinimg.com/originals/17/59/a4/1759a4fd3e786f6c59e874f29880a667.jpg" alt="Click me">
+    <div id="counter">Clicks: 0</div>
+    <div id="celebration">
+        <h2>us?</h2>
+        <img src="https://i.pinimg.com/736x/5d/20/78/5d2078079cb80276fce6c2dace016367.jpg" alt="us">
+    </div>
+
+    <script>
+        let counter = 0;
+        const cat = document.getElementById('cat');
+        const counterDiv = document.getElementById('counter');
+        const celebrationDiv = document.getElementById('celebration');
+        const clickSound = new Audio('wi-wi-wi-cat-made-with-Voicemod.mp3');
+
+        cat.addEventListener('click', () => {
+            counter++;
+            counterDiv.textContent = `Clicks: ${counter}`;
+            clickSound.play();
+            if (counter === 5) { 
+                celebrationDiv.style.display = 'block';
+
+                confetti({
+               particleCount: 100,
+               spread: 70,
+                 origin: { y: 0.6 }
+                  });
+            }
+        });
+
+        let canClick = true; // Controls whether the click is allowed
+const clickCooldown = 500; // Cooldown time in milliseconds (0.5 seconds)
+
+cat.addEventListener('click', () => {
+    if (!canClick) return; // Prevents spam clicking
+
+    canClick = false; // Disable further clicks temporarily
+    clickSound.currentTime = 0; // Reset sound
+    clickSound.play().catch(error => console.error("Playback error:", error));
+
+    setTimeout(() => {
+        canClick = true; // Re-enable clicking after cooldown
+    }, clickCooldown);
+});
+
+    </script>
+</body>
+</html>
